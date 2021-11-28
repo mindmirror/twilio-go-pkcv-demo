@@ -113,7 +113,7 @@ func main() {
 	}
 	block, _ := pem.Decode(privateKeyData)
 	key, _ := x509.ParsePKCS1PrivateKey(block.Bytes)
-	fmt.Println(key.N)
+	fmt.Println()
 
 	// Create the JWT
 	type TwilioClaims struct {
@@ -141,7 +141,10 @@ func main() {
 		},
 	}
 	signedString, err := token.SignedString(key)
-	fmt.Printf("%v %v", signedString, err)
+	if err != nil {
+		log.Fatal(err)
+	}
+	fmt.Printf("%v %s", signedString, "\n")
 
 	// Add the JWT to the request header
 	r.Header.Add("Twilio-Client-Validation", signedString)
@@ -151,6 +154,7 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Println()
 	log.Println(res.Status)
 	defer res.Body.Close()
 
