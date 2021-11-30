@@ -32,8 +32,8 @@ func main() {
 	//endpoint := "https://twlo.ngrok.io"
 	endpoint := "https://api.twilio.com/2010-04-01/Accounts/" + accountSid + "/Messages.json"
 	data := url.Values{}
-	data.Set("From", "+14632238785")
-	data.Set("To", "+14402206699")
+	data.Set("From", "+15551007890")
+	data.Set("To", "+15550001234")
 	data.Set("Body", "Hello from Go!")
 
 	client := &http.Client{}
