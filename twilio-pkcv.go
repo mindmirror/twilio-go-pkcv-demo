@@ -22,14 +22,12 @@ import (
 func main() {
 	accountSid := os.Getenv("TWILIO_PKCV_ACCOUNT_SID")
 	fmt.Println(accountSid)
-	authToken := os.Getenv("TWILIO_PKCV_AUTH_TOKEN")
-	fmt.Println(authToken)
 	apiKeySid := os.Getenv("TWILIO_PKCV_API_KEY")
 	fmt.Println(apiKeySid)
 	apiSecret := os.Getenv("TWILIO_PKCV_API_SECRET")
 	fmt.Println(apiSecret)
 	credentialSid := os.Getenv("TWILIO_PKCV_CREDENTIAL_SID")
-	fmt.Print(credentialSid)
+	fmt.Println(credentialSid, "\n")
 
 	//endpoint := "https://twlo.ngrok.io"
 	endpoint := "https://api.twilio.com/2010-04-01/Accounts/" + accountSid + "/Messages.json"
@@ -61,7 +59,7 @@ func main() {
 	sum := sha256.Sum256([]byte(data.Encode()))
 	hashedRequestBody := fmt.Sprintf("%x", sum)
 	log.Println("Hex(SHA256(request body): ", hashedRequestBody)
-	log.Println(r.URL.Query())
+	log.Println(r.URL.Query(), "\n")
 
 	// Set headers
 	r.Header.Add("Content-Type", "application/x-www-form-urlencoded")
@@ -124,7 +122,7 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	fmt.Printf("%v %s", signedString, "\n")
+	fmt.Printf("%v %s", signedString, "\n\n")
 
 	// Add the JWT to the request header
 	r.Header.Add("Twilio-Client-Validation", signedString)
@@ -134,7 +132,6 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Println()
 	log.Println(res.Status)
 	defer res.Body.Close()
 
