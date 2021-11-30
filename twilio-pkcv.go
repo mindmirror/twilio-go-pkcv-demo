@@ -16,8 +16,6 @@ import (
 	"strings"
 	"time"
 
-	//"github.com/twilio/twilio-go"
-	//openapi "github.com/twilio/twilio-go/rest/api/v2010"
 	"net/url"
 )
 
@@ -32,26 +30,6 @@ func main() {
 	fmt.Println(apiSecret)
 	credentialSid := os.Getenv("TWILIO_PKCV_CREDENTIAL_SID")
 	fmt.Print(credentialSid)
-
-	/*
-	client := twilio.NewRestClientWithParams(twilio.RestClientParams{
-		Username: accountSid,
-		Password: authToken,
-	})
-
-	params := &openapi.CreateMessageParams{}
-	params.SetTo("+14402206699")
-	params.SetFrom("+14632238785")
-	params.SetBody("Hello from Go!")
-
-	resp, err := client.ApiV2010.CreateMessage(params)
-	if err != nil {
-		fmt.Println(err.Error())
-		err = nil
-	} else {
-		fmt.Println("Message Sid: " + *resp.Sid)
-	}
-	 */
 
 	//endpoint := "https://twlo.ngrok.io"
 	endpoint := "https://api.twilio.com/2010-04-01/Accounts/" + accountSid + "/Messages.json"
@@ -79,6 +57,7 @@ func main() {
 	log.Println("Query String: N/A (no query strings for POST request)")
 	log.Println("Authorization: ", authorization)
 	log.Println("Request body: ", data.Encode())
+
 	sum := sha256.Sum256([]byte(data.Encode()))
 	hashedRequestBody := fmt.Sprintf("%x", sum)
 	log.Println("Hex(SHA256(request body): ", hashedRequestBody)
@@ -101,10 +80,11 @@ func main() {
 	fmt.Println(finalConanoicalRequest)
 	fmt.Println()
 	hashedSignature := fmt.Sprintf("%x", sha256.Sum256([]byte(finalConanoicalRequest)))
+	//hashedSignature := fmt.Sprintf("%x", sha512.Sum512([]byte(finalConanoicalRequest))) - SHA512 not supported
 	fmt.Println(hashedSignature)
 
 	// Generate the JWT
-	// Load key
+	// Load the private key for signing
 	usr, _ := user.Current()
 	dir := usr.HomeDir
 	privateKeyData, err := ioutil.ReadFile(filepath.Join(dir, ".ssh/twilio_private_key_nopass.pem"))
